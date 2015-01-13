@@ -9,6 +9,7 @@
  * See <http://creativecommons.org/publicdomain/zero/1.0/> for full details.
  */
 import org.apache.spark.SparkContext
+import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext._
 import org.apache.hadoop.conf.Configuration
 import org.bson.BSONObject
@@ -18,11 +19,12 @@ object ScalaWordCount {
 
   def main(args: Array[String]) {
 
-    val sc = new SparkContext("local", "Scala Word Count")
+    val conf = new SparkConf().setAppName("Simple Analysis")
+    val sc = new SparkContext(conf)
     
     val config = new Configuration()
-    config.set("mongo.input.uri", "mongodb://127.0.0.1:27017/beowulf.input")
-    config.set("mongo.output.uri", "mongodb://127.0.0.1:27017/beowulf.output")
+    config.set("mongo.input.uri", "mongodb://10.4.1.179:27017/beowulf.input")
+    config.set("mongo.output.uri", "mongodb://10.4.1.179:27017/beowulf.output")
 
     val mongoRDD = sc.newAPIHadoopRDD(config, classOf[com.mongodb.hadoop.MongoInputFormat], classOf[Object], classOf[BSONObject])
 
